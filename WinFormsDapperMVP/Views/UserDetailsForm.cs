@@ -47,9 +47,13 @@ public partial class UserDetailsForm : Form, IUserDetailsFormView
 
   public void ShowValidationErrors(string propertyName, string message)
   {
-    if(propertyName == nameof(User.Email))
+    if (propertyName == nameof(User.Email))
     {
       userDetailErrorProvider.SetError(txtEmail, message);
+    }
+    if (propertyName == nameof(User.BirthDay))
+    {
+      userDetailErrorProvider.SetError(dtCalendar, message);
     }
   }
 
