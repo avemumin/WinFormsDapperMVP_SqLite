@@ -25,7 +25,12 @@ public class UserRepository : IUserRepository
 
   public void Delete(User user)
   {
-    throw new NotImplementedException();
+    if (user is null) throw new Exception("Record is null");
+    string deleteQuery = "Delete From Users where Id = @Id";
+    using var conn = new SQLiteConnection(this._connection);
+    conn.Open();
+    conn.Execute(deleteQuery, new { Id = user.Id });
+    conn.Close();
   }
 
   public void Edit(User user)
@@ -50,11 +55,6 @@ public class UserRepository : IUserRepository
       throw new Exception("The list is empty");
     }
     return result;
-  }
-
-  public IEnumerable<User> GetByVal(string val)
-  {
-    throw new NotImplementedException();
   }
 
   public static object Params(User user)

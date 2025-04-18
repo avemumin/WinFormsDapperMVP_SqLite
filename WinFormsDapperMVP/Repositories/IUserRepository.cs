@@ -8,6 +8,6 @@ public interface IUserRepository
   void Edit(User user);
   void Delete(User user);
   IEnumerable<User> GetAll();
-  IEnumerable<User> GetByVal(string val);
+
 
 }

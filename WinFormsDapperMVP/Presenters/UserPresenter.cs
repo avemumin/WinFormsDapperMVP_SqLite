@@ -51,7 +51,11 @@ public class UserPresenter
 
   private void DeleteUser(object? sender, EventArgs e)
   {
-
+    if (SelectedGridItem != null)
+    {
+      this._repository.Delete(SelectedGridItem);
+      LoadAllUsers();
+    }
   }
 
   private void AddUser(object? sender, EventArgs e)
