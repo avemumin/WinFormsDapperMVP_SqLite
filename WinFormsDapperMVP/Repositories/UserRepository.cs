@@ -14,34 +14,55 @@ public class UserRepository : IUserRepository
   }
   public User? Create(User user)
   {
-    string insertQquery = @"Insert into Users (Name, LastName, Email, BirthDay)  VALUES (@Name, @LastName, @Email, @BirthDay) RETURNING Id, Name, LastName, Email, BirthDay";
-    using var conn = new SQLiteConnection(this._connection);
-    conn.Open();
-    var parameters =  Params(user);
-    var result = conn.QuerySingle<User>(insertQquery, parameters);
-    conn.Close();
-    return result;
+    try
+    {
+      string insertQquery = @"Insert into Users (Name, LastName, Email, BirthDay)  VALUES (@Name, @LastName, @Email, @BirthDay) RETURNING Id, Name, LastName, Email, BirthDay";
+      using var conn = new SQLiteConnection(this._connection);
+      conn.Open();
+      var parameters = Params(user);
+      var result = conn.QuerySingle<User>(insertQquery, parameters);
+      conn.Close();
+      return result;
+    }
+    catch (SQLiteException ex)
+    {
+      throw new Exception("Error while inserted new record", ex);
+    }
   }
 
   public void Delete(User user)
   {
-    if (user is null) throw new Exception("Record is null");
-    string deleteQuery = "Delete From Users where Id = @Id";
-    using var conn = new SQLiteConnection(this._connection);
-    conn.Open();
-    conn.Execute(deleteQuery, new { Id = user.Id });
-    conn.Close();
+    try
+    {
+      if (user is null) throw new Exception("Record is null");
+      string deleteQuery = "Delete From Users where Id = @Id";
+      using var conn = new SQLiteConnection(this._connection);
+      conn.Open();
+      conn.Execute(deleteQuery, new { Id = user.Id });
+      conn.Close();
+    }
+    catch (SQLiteException ex)
+    {
+      throw new Exception("Error while delete record", ex);
+    }
   }
 
   public void Edit(User user)
   {
-    if (user is null) throw new Exception("User does not exists");
-    string updateQuery = "Update Users SET Name = @Name, LastName = @LastName, Email=@Email, BirthDay=@BirthDay Where Id = @Id";
-    using var conn = new SQLiteConnection(this._connection);
-    conn.Open();
-    var parameters = Params(user);
-    conn.Execute(updateQuery, parameters);
-    conn.Close();
+    try
+    {
+      if (user is null) throw new Exception("User does not exists");
+      string updateQuery = "Update Users SET Name = @Name, LastName = @LastName, Email=@Email, BirthDay=@BirthDay Where Id = @Id";
+      using var conn = new SQLiteConnection(this._connection);
+      conn.Open();
+      var parameters = Params(user);
+      conn.Execute(updateQuery, parameters);
+      conn.Close();
+    }
+    catch (SQLiteException ex)
+    {
+      throw new Exception("Error while edit record", ex);
+    }
   }
 
   public IEnumerable<User> GetAll()

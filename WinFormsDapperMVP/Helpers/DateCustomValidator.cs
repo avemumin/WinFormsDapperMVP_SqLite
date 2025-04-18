@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using WinFormsDapperMVP.Models;
 
 namespace WinFormsDapperMVP.Helpers;
 
