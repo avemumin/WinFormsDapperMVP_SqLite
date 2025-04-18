@@ -1,4 +1,5 @@
-﻿using WinFormsDapperMVP.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using WinFormsDapperMVP.Models;
 using WinFormsDapperMVP.Repositories;
 using WinFormsDapperMVP.Views;
 
@@ -31,20 +32,44 @@ public class UserDetailsPresenter
 
   private void SaveUser(object? sender, EventArgs e)
   {
+    var user = SetUserParameters();
+    var valResult = ValidateModel(user);
+
+    if (valResult.Any())
+    {
+      SetErrorToView(valResult);
+      return;
+    }
+
+    this._view.ClearValidationErrors();
 
     if (this._userSource.DataSource != null)
     {
-      this._repository.Edit(SetUserParameters());
+      this._repository.Edit(user);
       CloseAfterAction();
     }
     else
     {
-      var created = this._repository.Create(SetUserParameters());
+      var created = this._repository.Create(user);
       if (created != null)
       {
         this._userSource.DataSource = created;
+        this._view.BindDetailsData(_userSource);
       }
-      this._view.BindDetailsData(_userSource);
+    }
+  }
+
+  private void SetErrorToView(List<ValidationResult> valResult)
+  {
+    if (valResult.Any())
+    {
+      foreach (var result in valResult)
+      {
+        foreach (var propName in result.MemberNames)
+        {
+          _view.ShowValidationErrors(propName, result.ErrorMessage);
+        }
+      }
     }
   }
 
@@ -62,5 +87,13 @@ public class UserDetailsPresenter
   private void CloseAfterAction()
   {
     ((Form)_view).Close();
+  }
+
+  private List<ValidationResult> ValidateModel(User user)
+  {
+    var result = new List<ValidationResult>();
+    var context = new ValidationContext(user);
+    Validator.TryValidateObject(user, context, result, true);
+    return result;
   }
 }

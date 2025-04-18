@@ -13,4 +13,7 @@ public interface IUserDetailsFormView
   event EventHandler CancelEvent;
 
   void BindDetailsData(BindingSource userSource);
+
+  void ShowValidationErrors(string propertyName, string message);
+  void ClearValidationErrors();
 }

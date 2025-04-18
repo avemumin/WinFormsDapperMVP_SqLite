@@ -28,6 +28,7 @@
     /// </summary>
     private void InitializeComponent()
     {
+      components = new System.ComponentModel.Container();
       btnSave = new Button();
       btnCancel = new Button();
       label1 = new Label();
@@ -40,10 +41,13 @@
       txtLastName = new TextBox();
       txtEmail = new TextBox();
       dtCalendar = new DateTimePicker();
+      userDetailErrorProvider = new ErrorProvider(components);
+      ((System.ComponentModel.ISupportInitialize)userDetailErrorProvider).BeginInit();
       SuspendLayout();
       // 
       // btnSave
       // 
+      btnSave.Font = new Font("Segoe UI", 15F);
       btnSave.Location = new Point(73, 358);
       btnSave.Name = "btnSave";
       btnSave.Size = new Size(120, 40);
@@ -53,6 +57,7 @@
       // 
       // btnCancel
       // 
+      btnCancel.Font = new Font("Segoe UI", 15F);
       btnCancel.Location = new Point(309, 358);
       btnCancel.Name = "btnCancel";
       btnCancel.Size = new Size(120, 40);
@@ -150,6 +155,10 @@
       dtCalendar.Size = new Size(613, 34);
       dtCalendar.TabIndex = 11;
       // 
+      // userDetailErrorProvider
+      // 
+      userDetailErrorProvider.ContainerControl = this;
+      // 
       // UserDetailsForm
       // 
       AutoScaleDimensions = new SizeF(7F, 15F);
@@ -168,7 +177,9 @@
       Controls.Add(btnCancel);
       Controls.Add(btnSave);
       MinimumSize = new Size(820, 490);
+      Name = "UserDetailsForm";
       Text = "UserDetailsForm";
+      ((System.ComponentModel.ISupportInitialize)userDetailErrorProvider).EndInit();
       ResumeLayout(false);
       PerformLayout();
     }
@@ -187,5 +198,6 @@
     private TextBox txtLastName;
     private TextBox txtEmail;
     private DateTimePicker dtCalendar;
+    private ErrorProvider userDetailErrorProvider;
   }
 }

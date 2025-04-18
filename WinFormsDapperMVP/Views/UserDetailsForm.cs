@@ -44,4 +44,17 @@ public partial class UserDetailsForm : Form, IUserDetailsFormView
       dtCalendar.Value = current.BirthDay.HasValue ? current.BirthDay.Value.Date : default;
     }
   }
+
+  public void ShowValidationErrors(string propertyName, string message)
+  {
+    if(propertyName == nameof(User.Email))
+    {
+      userDetailErrorProvider.SetError(txtEmail, message);
+    }
+  }
+
+  public void ClearValidationErrors()
+  {
+    userDetailErrorProvider.Clear();
+  }
 }
